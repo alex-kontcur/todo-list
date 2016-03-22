@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <entity class="com.test.app.todolist.domain.Comment" access="FIELD">
+        <description>Table COMMENTS</description>
+        <table name="COMMENTS"/>
+        <attributes>
+            <id name="id">
+                <column name="COMMENT_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+
+            <basic name="body">
+                <column name="BODY" length="4092"/>
+            </basic>
+
+            <basic name="commentDate">
+                <column name="DT_COMMENT"/>
+            </basic>
+
+            <many-to-one name="todo">
+                <join-column name="TODO_ID" nullable="false"/>
+            </many-to-one>
+
+            <many-to-one name="user">
+                <join-column name="USER_ID" nullable="false"/>
+            </many-to-one>
+
+        </attributes>
+    </entity>
+
+</entity-mappings>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <entity class="com.test.app.todolist.domain.Attachment" access="FIELD">
+        <description>Table ATTACHMENTS</description>
+        <table name="ATTACHMENTS"/>
+        <attributes>
+
+            <id name="id">
+                <column name="ATTACHMENT_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+
+            <basic name="fileName">
+                <column name="FILENAME"/>
+            </basic>
+
+            <basic name="content">
+                <column name="CONTENT" length="256"/>
+            </basic>
+
+            <many-to-one name="todo">
+                <join-column name="TODO_ID" nullable="false"/>
+            </many-to-one>
+
+        </attributes>
+    </entity>
+
+</entity-mappings>

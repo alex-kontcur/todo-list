@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <entity class="com.test.app.todolist.domain.User" access="FIELD">
+        <description>Table USERS</description>
+        <table name="USERS"/>
+        <attributes>
+            <id name="id">
+                <column name="USER_ID"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+
+            <basic name="name">
+                <column name="NAME"/>
+            </basic>
+
+            <basic name="password">
+                <column name="PASSWORD"/>
+            </basic>
+
+            <basic name="email">
+                <column name="EMAIL"/>
+            </basic>
+
+            <basic name="admin">
+                <column name="IS_ADMIN"/>
+            </basic>
+
+            <one-to-many name="todos" mapped-by="user" fetch="LAZY">
+                <cascade>
+                    <cascade-remove/>
+                </cascade>
+            </one-to-many>
+
+            <one-to-many name="comments" mapped-by="user" fetch="EAGER">
+                <cascade>
+                    <cascade-remove/>
+                </cascade>
+            </one-to-many>
+
+            <many-to-many name="watchingTodos" mapped-by="watchers" fetch="EAGER">
+                <cascade>
+                    <cascade-refresh/>
+                </cascade>
+            </many-to-many>
+
+        </attributes>
+    </entity>
+
+</entity-mappings>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <persistence-unit name="todo-list">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <mapping-file>META-INF/orm/Attachment.orm.xml</mapping-file>
+        <mapping-file>META-INF/orm/Comment.orm.xml</mapping-file>
+        <mapping-file>META-INF/orm/Todo.orm.xml</mapping-file>
+        <mapping-file>META-INF/orm/User.orm.xml</mapping-file>
+    </persistence-unit>
+
+</persistence>

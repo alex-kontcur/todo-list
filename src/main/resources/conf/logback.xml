@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" scanPeriod="120 seconds">
+    <jmxConfigurator/>
+
+    <!--  ===================================== Properties ========================================================= -->
+
+    <property name="LOG_DIR" value="${user.dir}/logs"/>
+    <property name="LOG_ROLLOVER_DIR" value="${user.dir}/logs.old"/>
+
+    <property name="ERROR_PATTERN_FORMAT" value="%-20(%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread]) %-5level %40.40logger{40} - %msg%n"/>
+    <property name="PATTERN_FORMAT" value="%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %40.40logger{40} - %msg%n"/>
+    <property name="MAX_HISTORY" value="60"/>
+    <property name="ROLLOVER_DATE_PATTERN" value="%d{yyyy-MM-dd}"/>
+
+    <property name="CONSOLE_LEVEL" value="${logging.console-level:-OFF}"/>
+    <property name="LOG_LEVEL" value="INFO"/>
+    <property name="APP_LOG_LEVEL" value="INFO"/>
+
+    <!--  ===================================== Common Appenders =================================================== -->
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LEVEL}</level>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Startup" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/startup.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/startup.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/error.${ROLLOVER_DATE_PATTERN}.log.zip</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>${ERROR_PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Runtime" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/runtime.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/runtime.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Memory" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/memory.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/memory.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Threads" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/threads.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/threads.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>${PATTERN_FORMAT}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Persistence" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/persistence.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/persistence.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Spring" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/spring.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ROLLOVER_DIR}/spring.${ROLLOVER_DATE_PATTERN}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <!--  ===================================== Common Utils ======================================================= -->
+
+    <logger name="com.test.spring.MemoryWatcherService" level="INFO" additivity="false">
+        <appender-ref ref="Memory"/>
+    </logger>
+
+    <logger name="com.test.spring.ThreadsWatcherService" level="INFO" additivity="false">
+        <appender-ref ref="Threads"/>
+    </logger>
+
+    <!--  ================================ Frameworks/Components =================================================== -->
+
+    <logger name="org.hibernate" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Persistence"/>
+        <appender-ref ref="Error"/>
+    </logger>
+
+    <logger name="org.springframework.data.mongodb" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Persistence"/>
+        <appender-ref ref="Error"/>
+    </logger>
+
+    <logger name="org.springframework" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Spring"/>
+        <appender-ref ref="Error"/>
+    </logger>
+
+    <!--  ===================================== Components ========================================================= -->
+
+
+    <logger name="com.test.spring.SpringWrapperApplication" level="${APP_LOG_LEVEL}" additivity="false">
+        <appender-ref ref="Startup"/>
+        <appender-ref ref="Error"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!--  ===================================== Other ============================================================== -->
+
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="Runtime"/>
+        <appender-ref ref="Error"/>
+    </root>
+
+</configuration>
